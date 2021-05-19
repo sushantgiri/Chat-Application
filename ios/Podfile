@@ -12,6 +12,8 @@ target 'ChatApplication' do
     :hermes_enabled => false
   )
 
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
   target 'ChatApplicationTests' do
     inherit! :complete
     # Pods for testing
