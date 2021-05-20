@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import { Alert } from 'react-native';
 
 export const AuthContext = createContext();
 
@@ -16,8 +17,20 @@ export const AuthProvider = ({children}) => {
         setUser,
         login: async (email, password) => {
           try {
+            if (!(typeof email === "string" && email.length > 0)){
+              alert("Email is empty");
+              return;
+            }
+
+            if (!(typeof password === "string" && password.length > 0)){
+              alert("Password is empty");
+              return;
+            }
+         
+          
             await auth().signInWithEmailAndPassword(email, password);
           } catch (e) {
+            Alert.alert('Error',e.message);
             console.log(e);
           }
         },
@@ -52,6 +65,7 @@ export const AuthProvider = ({children}) => {
             // })
             //we need to catch the whole sign up process if it fails too.
             .catch(error => {
+              Alert.alert('Error',error.message);
                 console.log('Something went wrong with sign up: ', error);
             });
           } catch(error) {
@@ -108,6 +122,17 @@ export const AuthProvider = ({children}) => {
         },
         register: async (email, password) => {
           try {
+
+            if (!(typeof email === "string" && email.length > 0)){
+              alert("Email is empty");
+              return;
+            }
+
+            if (!(typeof password === "string" && password.length > 0)){
+              alert("Password is empty");
+              return;
+            }
+
             await auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
               //Once the user creation has happened successfully, we can add the currentUser into firestore
@@ -122,14 +147,17 @@ export const AuthProvider = ({children}) => {
               })
               //ensure we catch any errors at this stage to advise us if something does go wrong
               .catch(error => {
+                Alert.alert('Something went wrong with added user to firestore: ',error.message);
                   console.log('Something went wrong with added user to firestore: ', error);
               })
             })
             //we need to catch the whole sign up process if it fails too.
             .catch(error => {
+              Alert.alert('Something went wrong with sign up: ',error.message);
                 console.log('Something went wrong with sign up: ', error);
             });
           } catch (e) {
+            Alert.alert('Error',e.message);
             console.log(e);
           }
         },
