@@ -1,20 +1,24 @@
 package com.chatapplication;
 
-import android.app.Application;
 import android.content.Context;
-import com.facebook.react.PackageList;
+
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.facebook.react.PackageList;
 import java.lang.reflect.InvocationTargetException;
+import androidx.multidex.MultiDexApplication;
+
+
+
+
 import java.util.List;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
-
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -27,16 +31,17 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
-            // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new RNGoogleSigninPackage());
+          // Packages that cannot be autolinked yet can be added manually here, for example:
+          // packages.add(new MyReactNativePackage());
           return packages;
         }
 
-        @Override
-        protected String getJSMainModuleName() {
-          return "index";
-        }
-      };
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
 
   @Override
   public ReactNativeHost getReactNativeHost() {
@@ -47,18 +52,14 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+        initializeFlipper(this); // Remove this line if you don't want Flipper enabled
   }
-
   /**
-   * Loads Flipper in React Native templates. Call this in the onCreate method with something like
-   * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+   * Loads Flipper in React Native templates.
    *
    * @param context
-   * @param reactInstanceManager
    */
-  private static void initializeFlipper(
-      Context context, ReactInstanceManager reactInstanceManager) {
+  private static void initializeFlipper(Context context) {
     if (BuildConfig.DEBUG) {
       try {
         /*
@@ -66,9 +67,7 @@ public class MainApplication extends Application implements ReactApplication {
         since Flipper library is not available in release mode
         */
         Class<?> aClass = Class.forName("com.chatapplication.ReactNativeFlipper");
-        aClass
-            .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
-            .invoke(null, context, reactInstanceManager);
+        aClass.getMethod("initializeFlipper", Context.class).invoke(null, context);
       } catch (ClassNotFoundException e) {
         e.printStackTrace();
       } catch (NoSuchMethodException e) {
@@ -81,3 +80,5 @@ public class MainApplication extends Application implements ReactApplication {
     }
   }
 }
+
+// com.chatapplication.ReactNativeFlipper

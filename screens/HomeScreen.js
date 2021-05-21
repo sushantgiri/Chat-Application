@@ -82,6 +82,7 @@ const Posts = [
   },
 ];
 
+
 const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);

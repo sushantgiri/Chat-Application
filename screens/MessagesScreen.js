@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState,useContext}  from 'react';
 import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
 import {
   Container,
@@ -12,6 +12,10 @@ import {
   MessageText,
   TextSection,
 } from '../styles/MessageStyles';
+import firestore from '@react-native-firebase/firestore';
+import {AuthContext} from '../navigation/AuthProvider';
+
+
 
 const Messages = [
   {
@@ -57,10 +61,92 @@ const Messages = [
 ];
 
 const MessagesScreen = ({navigation}) => {
+  const {ownUser} = useContext(AuthContext);
+  const [users, setUsers] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [channels, setChannels] = useState(null);
+
+  const fetchUsers = async () => {
+    try {
+      const list = [];
+
+      await firestore()
+        .collection('users')
+        .get()
+        .then((querySnapshot) => {
+          // console.log('Total Posts: ', querySnapshot.size);
+
+          querySnapshot.forEach((doc) => {
+            list.push(doc.data());
+          });
+
+          
+
+          
+          
+        });
+
+      setUsers(list);
+
+      if (loading) {
+        setLoading(false);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const fetchChannels = async () => {
+    try {
+      const list = [];
+
+      await firestore()
+        .collection('channels')
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            list.push({ ...doc.data(), uid: doc.id })      
+          });
+        });
+
+      setChannels(list);
+
+      if (loading) {
+        setLoading(false);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  renderUsers = ({item}) => {
+    return (
+      <Text>Hello</Text>
+    )
+  }
+
+  renderChannels = ({item}) => {
+    return (
+      <Text>Hello</Text>
+
+    )
+  } 
+
+
+  useEffect(() => {
+    fetchUsers();
+    fetchChannels();
+    
+  }, []);
+
     return (
       <Container>
+
+
         <FlatList 
-          data={Messages}
+          data={users}
           keyExtractor={item=>item.id}
           renderItem={({item}) => (
             <Card onPress={() => navigation.navigate('Chat', {userName: item.userName})}>
@@ -70,7 +156,7 @@ const MessagesScreen = ({navigation}) => {
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.userName}</UserName>
+                    <UserName>{item.email}</UserName>
                     <PostTime>{item.messageTime}</PostTime>
                   </UserInfoText>
                   <MessageText>{item.messageText}</MessageText>

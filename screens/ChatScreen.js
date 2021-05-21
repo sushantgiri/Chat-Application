@@ -3,9 +3,45 @@ import {View, ScrollView, Text, Button, StyleSheet} from 'react-native';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import firebase from '@react-native-firebase/app';
 
 const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
+  const [privateMessages, setPrivateMessages] = useState([]);
+
+
+
+  
+  const fetchUsers = async () => {
+    try {
+      const list = [];
+
+      await firestore()
+        .collection('users')
+        .get()
+        .then((querySnapshot) => {
+          // console.log('Total Posts: ', querySnapshot.size);
+
+          querySnapshot.forEach((doc) => {
+            list.push(doc.data());
+          });
+
+          
+
+          
+          
+        });
+
+      setUsers(list);
+
+      if (loading) {
+        setLoading(false);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     setMessages([
