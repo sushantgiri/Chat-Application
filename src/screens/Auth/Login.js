@@ -51,6 +51,10 @@ class Login extends React.Component {
             return true;
     }
 
+    handleSocialLogin = () => {
+
+    }
+
     handleLogin = () => {
         const {email, password} = this.state;
         if(!this.validation()) {
@@ -97,6 +101,16 @@ class Login extends React.Component {
                       Sign in to begin your experience.
                    </Text> 
                </View>
+               <View style={{ alignItems: 'center', marginTop: ScreenHeight*0.05 }}>
+                            <TouchableOpacity 
+                                activeOpacity={0.6}
+                                onPress={this.handleSocialLogin}
+                                style={{ backgroundColor: 'black', borderRadius: 8 }}
+                            > 
+                                <Text style={{ color: 'white', padding: 10, fontSize: 18, letterSpacing: 1.25 }}>GOOGLE LOGIN</Text>
+                            </TouchableOpacity>
+                        </View>
+
                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: dimensions.height*0.05, marginBottom: dimensions.height*0.02}}>
                     <Image 
                         style={{ height: dimensions.height/8 }}
@@ -147,14 +161,7 @@ class Login extends React.Component {
                         handleShowPassword={this.handleShowPassword}
                    />
 
-                            <View style={{ alignItems: 'center', marginTop: ScreenHeight*0.05, marginBottom: ScreenHeight * 0.08 }}>
-                            <TouchableOpacity 
-                                activeOpacity={0.6}
-                                style={{ backgroundColor: 'black', borderRadius: 8 }}
-                            > 
-                                <Text style={{ color: 'white', padding: 10, fontSize: 18, letterSpacing: 1.25 }}>GOOGLE LOGIN</Text>
-                            </TouchableOpacity>
-                        </View>
+                           
                   
                </View>
 

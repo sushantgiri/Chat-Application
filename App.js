@@ -23,6 +23,7 @@ import React, { Component } from 'react';
  });
 
  console.reportErrorsAsExceptions = false;
+ console.disableYellowBox = true;
 
  
  
