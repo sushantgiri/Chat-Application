@@ -10,6 +10,10 @@ import auth from '@react-native-firebase/auth';
 import {setUser} from '../../redux/actions/authActions';
 const ScreenHeight = Dimensions.get('window').height;
 
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import firestore from '@react-native-firebase/firestore';
+
+
 
 class Login extends React.Component {
 
@@ -20,6 +24,55 @@ class Login extends React.Component {
         secureTextEntry: true,
         loading: false
     }
+
+    componentDidMount() {
+        GoogleSignin.configure({
+            webClientId:
+              '403258627487-ttnr04c6o6me8ucuh4ol3vp7bkurqjrg.apps.googleusercontent.com',
+          });
+
+          return auth().onAuthStateChanged(this.onAuthStateChanged);
+    }
+
+     onAuthStateChanged = (user) => {
+        if(user){
+            firestore().collection('users').onSnapshot(querySnapShot => {
+                let users = [];
+                querySnapShot.forEach(doc => {
+                    users.push(doc.data());
+                })
+
+                users = users.filter((fetchedUser) => {
+                  return fetchedUser.uid === user.uid;
+                })
+
+
+                if(users.length == 0){
+                    firestore().collection('users').add({
+                        uid: user.uid,
+                        name: user.displayName,
+                        avatar: user.photoURL
+                    })   
+                }
+
+
+                const userObj = {
+                    name: user.displayName,
+                    avatar: user.photoURL,
+                    email: user.email,
+                    uid: user.uid,
+                }
+    
+                this.props.setUser(userObj);
+    
+                this.props.navigation.navigate('Home');
+                
+              })
+
+           
+           
+        }
+      };
 
     static navigationOptions = {
         header: null
@@ -51,15 +104,45 @@ class Login extends React.Component {
             return true;
     }
 
-    handleSocialLogin = () => {
+    googleSignIn = async () => {
+        try {
 
-    }
+            try {
+                await GoogleSignin.revokeAccess();
+                await GoogleSignin.signOut();
+              } catch (error) {
+                console.error(error);
+              }
+
+            const { idToken } = await GoogleSignin.signIn();
+
+            // Create a Google credential with the token
+            const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+            // Sign-in the user with the credential
+          await  auth().signInWithCredential(googleCredential);
+
+
+        } catch (error) {
+            alert(error);
+          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            // user cancelled the login flow
+          } else if (error.code === statusCodes.IN_PROGRESS) {
+            // operation (e.g. sign in) is in progress already
+          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            // play services not available or outdated
+          } else {
+            // some other error happened
+          }
+        }
+      };
 
     handleLogin = () => {
         const {email, password} = this.state;
         if(!this.validation()) {
             return;
         }
+
 
         this.setState({ loading: true }, () => {
             auth().signInWithEmailAndPassword(email, password).then(loggedIn => {
@@ -101,16 +184,18 @@ class Login extends React.Component {
                       Sign in to begin your experience.
                    </Text> 
                </View>
-               <View style={{ alignItems: 'center', marginTop: ScreenHeight*0.05 }}>
+
+
+               <View style={{ alignItems: 'center', marginTop: ScreenHeight*0.08 }}>
                             <TouchableOpacity 
                                 activeOpacity={0.6}
-                                onPress={this.handleSocialLogin}
+                                onPress={this.googleSignIn}
                                 style={{ backgroundColor: 'black', borderRadius: 8 }}
                             > 
                                 <Text style={{ color: 'white', padding: 10, fontSize: 18, letterSpacing: 1.25 }}>GOOGLE LOGIN</Text>
                             </TouchableOpacity>
                         </View>
-
+            
                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: dimensions.height*0.05, marginBottom: dimensions.height*0.02}}>
                     <Image 
                         style={{ height: dimensions.height/8 }}

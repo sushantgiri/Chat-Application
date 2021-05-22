@@ -1055,6 +1055,11 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/geolocation/-/geolocation-2.0.2.tgz"
   "version" "2.0.2"
 
+"@react-native-community/google-signin@^5.0.0":
+  "integrity" "sha512-MvFHImmtlmE1kJZgZ9XaULm/OBuQ/AQWOCPr3NzYTUv2cCqyGwfFrealo5PS/fuL/InCGcfqK1k/1dZ+67Hjmg=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/google-signin/-/google-signin-5.0.0.tgz"
+  "version" "5.0.0"
+
 "@react-native-community/viewpager@^2.0.1":
   "integrity" "sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ=="
   "resolved" "https://registry.npmjs.org/@react-native-community/viewpager/-/viewpager-2.0.2.tgz"
@@ -5979,7 +5984,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.0 || ^16.0", "prop-types@^15.5.10", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2", "prop-types@15.7.2":
+"prop-types@*", "prop-types@^15.0 || ^16.0", "prop-types@^15.5.10", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2", "prop-types@15.7.2":
   "integrity" "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   "version" "15.7.2"

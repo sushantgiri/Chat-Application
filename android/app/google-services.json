@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "403258627487-q694hroc1kbtk2925o93g9tr4jt6jplm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chatapplication",
+            "certificate_hash": "dc0147e9cb24261acd1e7fe9ddde325e7a89819a"
+          }
+        },
+        {
           "client_id": "403258627487-ttnr04c6o6me8ucuh4ol3vp7bkurqjrg.apps.googleusercontent.com",
           "client_type": 3
         }

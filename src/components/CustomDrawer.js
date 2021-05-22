@@ -9,6 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import {clearUser, setProfile} from '../redux/actions/authActions';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 import DrawerProfile from './DrawerProfile'
 
@@ -24,6 +25,16 @@ class CustomDrawer extends React.Component {
         uid: firebase.auth().currentUser.uid
     };
 
+    signOut = async () => {
+        try {
+          await GoogleSignin.revokeAccess();
+          await GoogleSignin.signOut();
+          this.setState({ user: null }); // Remember to remove the user from your app's state as well
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
     handlePress = () => { 
        this.setState({ loading: true }, async () => {
             await this.state.statusFirebase.child(this.state.uid).set({
@@ -31,6 +42,7 @@ class CustomDrawer extends React.Component {
                 last_changed: firebase.database.ServerValue.TIMESTAMP,
             })
             firebase.auth().signOut().then(() => {
+                this.signOut;
                 this.setState({ loading: false }, () => {
                     this.props.navigation.navigate('AuthLoading');
                 })

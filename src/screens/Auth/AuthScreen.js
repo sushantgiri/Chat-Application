@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useContext} from 'react';
 import {View, Text, StyleSheet, ImageBackground, Image, Dimensions, StatusBar} from 'react-native';
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -6,12 +6,20 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomTextInput from '../../components/TextInput';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import auth from '@react-native-firebase/auth';
+
 
 const ScreenHeight = Dimensions.get('window').height;
 const ScreenWidth = Dimensions.get('window').width;
 
+
 const AuthScreen = (props) => {
 
+
+
+   
+
+    
     handleLoginPress = () => {
         props.navigation.navigate('Login')
     }
@@ -19,6 +27,7 @@ const AuthScreen = (props) => {
     handleSignUpPress = () => {
         props.navigation.navigate('Register')
     }
+
 
     const {styles: redux, dimensions} = props.global;
 
@@ -61,6 +70,9 @@ const AuthScreen = (props) => {
                                 </TouchableOpacity>
                             </View>
                         </View>
+
+                       
+
                 </View>
             </LinearGradient>
     )
